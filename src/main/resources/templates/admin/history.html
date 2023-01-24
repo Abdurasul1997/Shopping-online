@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="with=device-with,initial-scale=1.0">
+    <title>History</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
+    <div class="container">
+        <img class="mg" src="https://www.convertdigital.co.uk/wp-content/uploads/Shopify-Logo-300x300.jpeg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i id="bar" class="fa-solid fa-bars"></i></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+
+
+                <form class="form-inline my-2 my-lg-0" method="get">
+                    <input class="form-control mr-sm-2" name="search" type="search" th:value="${search}" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/add">Add</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/history">History</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/auth/logout" class="nav-link">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">User page</a>
+                </li>
+
+            </ul>
+
+            <!--                <li class="nav-item">-->
+            <!--                    <i class="fa-solid fa-magnifying-glass"></i>-->
+            <!--                    <i class="fal fa-shopping-bag"></i>-->
+            <!--                </li>-->
+            </ul>
+        </div>
+    </div>
+    </div>
+</nav>
+
+<section id="watches" class="my-5 py-5">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Img</th>
+            <th>User id</th>
+            <th>Product id</th>
+            <th>Product name</th>
+            <th>Product size</th>
+            <th>Product the number</th>
+            <th>Time of purchase</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <tr th:each="product, counter : ${products}">
+            <td th:text="${counter.count}"></td>
+            <td><img style="width: 50px ; height: 50px" th:src="@{'/showCover?img='+${product.product.cover.path}}"></td>
+            <td th:text="${product.user.id}"></td>
+            <td th:text="${product.product.id}"></td>
+            <td th:text="${product.product.name}"></td>
+            <td th:text="${product.size}"></td>
+            <td th:text="${product.theNumber}"></td>
+            <td th:text="${product.createAt}"></td>
+
+
+        </tr>
+
+        </tbody>
+
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <th:block th:if="${page.hasPrevious()}">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{'?page='+${page.previousPageable().pageNumber}}" tabindex="-1">Previous</a>
+                </li>
+            </th:block>
+
+            <th:block th:each="pageNumber : ${pageNumbers}">
+                <li th:class="page-item" th:classappend="${page.number == pageNumber} ? active : ''"><a
+                        class="page-link" th:href="@{'?search='+${search}+'&page=' + ${pageNumber}}"
+                        th:text="${pageNumber}"></a></li>
+            </th:block>
+
+
+            <th:block th:if="${page.hasNext()}">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{'?page='+${page.nextPageable().pageNumber}}" tabindex="-1">Next</a>
+                </li>
+            </th:block>
+        </ul>
+    </nav>
+</section>
+
+
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://code.jquery.com /jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
